@@ -1,3 +1,4 @@
+# test custom fact at lib/facter/user_audit.rb
 require 'spec_helper'
 require 'facter/user_audit'
 
@@ -11,6 +12,9 @@ describe SystemUsers::Fact do
   # filesystem from fixtures/fakefs for each test we run
   include FakeFS::SpecHelpers
 
+  #
+  # /etc/passwd
+  #
   it "duplicate uid detected" do
     config = File.dirname(File.expand_path(__FILE__)) + '/../fixtures/fakefs/duplicate_uid'
     FakeFS::FileSystem.clone(config, '/')
@@ -25,6 +29,9 @@ describe SystemUsers::Fact do
     expect(SystemUsers::Fact.run_fact()[:duplicate][:username]).to eq ['daemon', 'dupuser']
   end
 
+  #
+  # /etc/group
+  #
   it "duplicate gid detected" do
     config = File.dirname(File.expand_path(__FILE__)) + '/../fixtures/fakefs/duplicate_gid'
     FakeFS::FileSystem.clone(config, '/')
@@ -38,4 +45,5 @@ describe SystemUsers::Fact do
 
     expect(SystemUsers::Fact.run_fact()[:duplicate][:groupname]).to eq ['apache', 'dupgroup']
   end
+
 end
