@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/GeoffWilliams/system_users.svg?branch=master)](https://travis-ci.org/GeoffWilliams/system_users)
 # system_users
 
 #### Table of Contents
