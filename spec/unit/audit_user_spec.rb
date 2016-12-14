@@ -10,8 +10,8 @@ describe SystemUsers::Fact do
   it "work ya bastard" do
     config = File.dirname(File.expand_path(__FILE__)) + '/../fixtures/fakefs/duplicate_username'
     FakeFS::FileSystem.clone(config, '/')
-
-puts File.read('/etc/passwd')
+$stdout.puts config
+$stdout.puts File.read('/etc/passwd')
     expect(SystemUsers::Fact.run_fact()).to eq "abcdef"
   end
 end
