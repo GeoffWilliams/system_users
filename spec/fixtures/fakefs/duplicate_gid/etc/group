@@ -1,0 +1,7 @@
+stapdev:x:158
+sudo:x:1001:
+admins:x:1002:
+dupgroupa:x:1003:
+disk:x:1004:
+dupgroupb:x:1003:
+frog:x:1006:
