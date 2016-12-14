@@ -15,8 +15,24 @@ module SystemUsers
       end
     end
 
+    def self.get_dups(filename, col)
+      list = File.readlines(filename).map do |line|
+        line.split(':')[col]
+      end
+      # http://stackoverflow.com/a/8922049
+      dups = list.group_by{ |e| e }.select { |k, v| v.size > 1 }.map(&:first)
+      dups.sort()
+    end
+
     def self.run_fact()
-      'abcdef'
+      {
+        :duplicate => {
+          :uid        => get_dups('/etc/passwd', 2),
+          :username   => get_dups('/etc/passwd', 0),
+          :gid        => get_dups('/etc/group', 2),
+          :groupname  => get_dups('/etc/group', 0)
+        }
+      }
     end
 
   end
