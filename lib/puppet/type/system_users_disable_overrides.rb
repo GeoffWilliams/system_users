@@ -9,27 +9,21 @@ Puppet::Type.newtype(:system_users_disable_overrides) do
     end
   end
 
-  newparam(:name) do
-    desc "The name of the database."
+  # also create ensure as a parameter to stop puppet complaining about
+  # missing namevars/titles.  The validation code here never seems to
+  # be executed - which kinda makes sense because it looks like the
+  # property setter overrides this once its in play.  I was hoping to
+  # have the model disable multiple uses of this custom type since its
+  # basically a switch but this seems impossible.  Instead:
+  # "Don't do that" (TM)
+  newparam(:ensure) do
+    # The code below never fires.  I'l leave it in place incase anyone
+    # works out a way to enable it
+    # validate do |value|
+    #   if value != 'overrides_disabled'
+    #     raise ArgumentError, "system_users_disable_overrides only accepts ensure => overrides_disabled"
+    #   end
+    # end
+    isnamevar
   end
-
-
-#   #ensurable do
-#   #  desc "Ensure overrides are disabled (true) or unaltered (false)"
-#
-#     newvalue(:true) do
-# #      provider.install
-#     end
-#
-#     newvalue(:false) do
-# #      provider.uninstall
-#     end
-#
-#     defaultto :false
-#   end
-
-  #def insync?(is)
-#    puts "insnyc force false"
-  #  return false
-  #end
 end

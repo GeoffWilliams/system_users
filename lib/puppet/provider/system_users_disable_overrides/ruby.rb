@@ -56,17 +56,4 @@ Puppet::Type.type(:system_users_disable_overrides).provide(:ruby) do
     end
     return current_status
   end
-
-
-  # def ensure=(new_value)
-  #   puts "HEEELLOOOOOOO XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" + new_value
-  # end
-
-  # def in_sync()
-  #   puts "INSYNC CHECK"
-  #   get_targets().empty?
-  # end
-
-
-
 end

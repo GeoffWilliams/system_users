@@ -1,3 +1,1 @@
-system_users_disable_overrides { "blah":
-  ensure => overrides_disabled,
-}
+system_users_disable_overrides { "overrides_disabled": }
