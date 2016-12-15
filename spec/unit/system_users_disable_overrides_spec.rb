@@ -32,10 +32,6 @@ describe PuppetX::SystemUsers do
     "disable_overrides"
   end
 
-  # before(:example) do
-  #   allow(FakeFS::File).to receive(:chown).and_return(true)
-  # end
-
   it 'should disable access to override files initialized in before(:example)' do
     # build a list of files that should be GONE after our provider runs.  We
     # *must* run this before activating fakefs or we won't be able to read them!
@@ -43,31 +39,18 @@ describe PuppetX::SystemUsers do
     # FakeFS::activate!
     FakeFS::FileSystem.clone(config, '/')
 
+    # Monkey patch the FakeFS::File class to have a chown function that
+    # always succeeds.  Rely on rspec to reset this after each test - in
+    # reality it doesn't matter (in this instance...) since we're the only
+    # ones doing chown...
     MonkeyPatch.on()
-    # File.chown('/etc/passwd',nil,nil)
-    # stat  = File.stat('/etc/passwd')
-    # uid   = stat.uid
-    # puts uid
-    # File.chmod(0000, '/etc/passwd')
-    # puts "still here"
-    #allow(File).to receive(:find_x).and_return({something: 'testing'})
-    $stdout.puts "<<<<<<< entry"
-    $stdout.puts "<<<<<<< stioll here"
-    #PuppetX::SystemUsers
     PuppetX::SystemUsers.disable_overrides()
-$stdout.puts ">>>>>>>>>>>> disable overrides call completed"
     targets_before.each do |f|
       if File.exists?(f)
+        stat  = File.stat(f)
 
-        # check each file owned by root with permissions '000'
-      stat  = File.stat(f)
-      uid   = stat.uid
+        # expect that our chmod removed all permissions
         mode  = "%03o" % (stat.mode & 0777)
-        puts mode
-        puts "*************************"
-        #File.expects(:chmod).with(0000, f)
-        #File.expects(:chown).with(0, nil, f)
-      #expect(uid).to eq 0
         expect(mode).to eq '000'
 
         # expect that we did a fake chown to uid 0
@@ -77,35 +60,6 @@ $stdout.puts ">>>>>>>>>>>> disable overrides call completed"
         fail msg
       end
     end
-
-    # stub the Fakefs File class to allow chmod to succeed
-    #FakeFS::File.stub(:chown).and_return(true)
-
-#http://stackoverflow.com/questions/24520798/stub-static-module-method-on-controller
-
-#allow(FakeFS::File).to receive(:chown).and_return(true)
-    #::File.stub(:chown).with(anything).and_return true
-
-
-
-
   end
 
-  # it 'should have expected parameters' do
-  #   params.each do |param|
-  #     expect(compose.parameters).to be_include(param)
-  #   end
-  # end
-  #
-	# it 'should require options to be a string' do
-	# 	expect(compose).to require_string_for('options')
-  # end
-  #
-	# it 'should require up_args to be a string' do
-	# 	expect(compose).to require_string_for('up_args')
-  # end
-  #
-	# it 'should require scale to be a hash' do
-	# 	expect(compose).to require_hash_for('scale')
-  # end
 end

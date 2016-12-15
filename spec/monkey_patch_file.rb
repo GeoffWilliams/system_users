@@ -12,14 +12,20 @@
 # I'm putting this firmly in the too-hard basket
 module MonkeyPatch
 
-  def self.on()
-    $stderr.puts "MonkeyPatching file >>>>>>>>>>>>>"
+  # activate monkey patching RFN.  Pass true here to enable printing
+  # helpful debug messages when we carry out our fake operations
+  def self.on(debug_mode=false)
+    if debug_mode
+      puts "The FakeFS::File class is monkey patched!!!"
+    end
     FakeFS::File.class_eval do
       @fake_chowns = {}
-
+      @debug_mode = debug_mode
       def self.chown(owner_int, group_int, filename)
         @fake_chowns[filename] = [owner_int, group_int]
-        $stderr.puts "running monkey patched File.chown -- chmod(#{owner_int}, #{group_int}, #{filename})"
+        if @debug_mode
+          puts "running monkey patched File.chown -- chmod(#{owner_int}, #{group_int}, #{filename})"
+        end
       end
 
       # return a hash of the fake chmods we did
