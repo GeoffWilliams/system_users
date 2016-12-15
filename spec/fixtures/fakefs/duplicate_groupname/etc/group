@@ -1,3 +1,5 @@
+# make sure we can handle comments and blank lines!
+
 stapdev:x:158:
 showoff:x:1000:
 apache:x:1003

@@ -8,12 +8,6 @@ gem 'puppet-lint', '>= 1.0.0'
 gem 'facter', '>= 1.7.0'
 gem 'rspec-puppet'
 gem 'fakefs', '0.10.1', require: false
-
-# rspec must be v2 for ruby 1.8.7
-if RUBY_VERSION >= '1.8.7' && RUBY_VERSION < '1.9'
-  gem 'rspec', '~> 2.0'
-  gem 'rake', '~> 10.0'
-else
-  # rubocop requires ruby >= 1.9
-  gem 'rubocop'
-end
+gem 'rspec', '3.5.0'
+gem 'rspec-mocks', '3.5.0'
+gem 'rubocop'

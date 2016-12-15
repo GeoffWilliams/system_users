@@ -16,9 +16,13 @@ module SystemUsers
     end
 
     def self.get_dups(filename, col)
-      list = File.readlines(filename).map do |line|
+      list = File.readlines(filename).reject { |line|
+        # skip entirely whitespace or commented out
+        line =~ /^\s+$/ or line =~ /^#/
+      }.map { |line|
         line.split(':')[col]
-      end
+      }
+      
       # http://stackoverflow.com/a/8922049
       dups = list.group_by{ |e| e }.select { |k, v| v.size > 1 }.map(&:first)
       dups.sort()

@@ -1,3 +1,5 @@
+# make sure we can handle comments and blank lines!
+
 stapdev:x:158
 sudo:x:1001:
 admins:x:1002:
