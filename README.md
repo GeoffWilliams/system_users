@@ -69,8 +69,7 @@ se.
 
 ## Limitations
 
-This is where you list OS compatibility, version compatibility, etc. If there
-are Known Issues, you might want to include them under their own heading here.
+* You *must* use at least version 4.14.0 of [puppetlabs-stdlib](https://forge.puppetlabs.com/puppetlabs/stdlib).  Earlier versions have a bug where attempting to delete NIS users gives the error `Could not evaluate: undefined method `chomp' for nil:NilClass`
 
 ## Development
 

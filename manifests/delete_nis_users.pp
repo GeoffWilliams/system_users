@@ -4,11 +4,22 @@
 # from the system.
 class system_users::delete_nis_users {
 
-  file_line { 'delete NIS users from /etc/passwd':
-    ensure            => absent,
-    path              => '/etc/passwd',
+  File_line {
+    ensure            => 'absent',
     match_for_absence => true,
     match             => '^\+',
     multiple          => true,
+  }
+
+  file_line { 'delete NIS users from /etc/passwd':
+    path  => '/etc/passwd',
+  }
+
+  file_line { 'delete NIS users from /etc/shadow':
+    path => '/etc/shadow',
+  }
+
+  file_line { 'delete NIS users from /etc/group':
+    path => '/etc/group',
   }
 }
