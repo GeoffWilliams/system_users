@@ -11,3 +11,8 @@ gem 'fakefs', '0.10.1', require: false
 gem 'rspec', '3.5.0'
 gem 'rspec-mocks', '3.5.0'
 gem 'rubocop'
+
+gem 'test-kitchen'
+gem 'kitchen-puppet'
+gem 'busser'
+gem 'kitchen-docker'

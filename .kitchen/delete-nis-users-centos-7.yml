@@ -1,0 +1,9 @@
+---
+username: kitchen
+ssh_key: "/Users/geoff/pe_kit_shared/system_users/.kitchen/docker_id_rsa"
+image_id: 521cdc4e3f60
+container_id: b1deb41347d8f325f7200def3abbd4302d7c4fad14cc7a217ae07e368c568839
+hostname: localhost
+port: 32795
+last_action: create
+last_error: Errno::ENAMETOOLONG

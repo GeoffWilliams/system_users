@@ -1,0 +1,55 @@
+I, [2016-12-19T14:47:13.274027 #12731]  INFO -- second-run-centos-7: -----> Converging <second-run-centos-7>...
+I, [2016-12-19T14:47:13.274574 #12731]  INFO -- second-run-centos-7: Preparing files for transfer
+I, [2016-12-19T14:47:13.274627 #12731]  INFO -- second-run-centos-7: Preparing modules
+I, [2016-12-19T14:47:13.279324 #12731]  INFO -- second-run-centos-7: Preparing manifests
+I, [2016-12-19T14:47:13.279730 #12731]  INFO -- second-run-centos-7: Preparing files
+I, [2016-12-19T14:47:13.279863 #12731]  INFO -- second-run-centos-7: nothing to do for files
+I, [2016-12-19T14:47:13.280101 #12731]  INFO -- second-run-centos-7: Preparing spec files
+I, [2016-12-19T14:47:13.359142 #12731]  INFO -- second-run-centos-7: Finished Preparing files for transfer
+I, [2016-12-19T14:47:13.359384 #12731]  INFO -- second-run-centos-7: Installing puppet from yum on centos
+I, [2016-12-19T14:47:13.438877 #12731]  INFO -- second-run-centos-7: Transferring files to <second-run-centos-7>
+E, [2016-12-19T14:47:41.804320 #12731] ERROR -- second-run-centos-7: Converge failed on instance <second-run-centos-7>.
+E, [2016-12-19T14:47:41.804390 #12731] ERROR -- second-run-centos-7: ------Exception-------
+E, [2016-12-19T14:47:41.804407 #12731] ERROR -- second-run-centos-7: Class: Errno::ENAMETOOLONG
+E, [2016-12-19T14:47:41.804418 #12731] ERROR -- second-run-centos-7: Message: File name too long @ rb_file_s_stat - /var/folders/54/1svw01r93bz32rjjh2ytkgc40000gn/T/second-run-centos-7-sandbox-20161219-12731-x3c7mr/spec/fixtures/modules/system_users/spec/fixtures/modules/system_users/spec/fixtures/modules/system_users/spec/fixtures/modules/system_users/spec/fixtures/modules/system_users/spec/fixtures/modules/system_users/spec/fixtures/modules/system_users/spec/fixtures/modules/system_users/spec/fixtures/modules/system_users/spec/fixtures/modules/system_users/spec/fixtures/modules/system_users/spec/fixtures/modules/system_users/spec/fixtures/modules/system_users/spec/fixtures/modules/system_users/spec/fixtures/modules/system_users/spec/fixtures/modules/system_users/spec/fixtures/modules/system_users/spec/fixtures/modules/system_users/spec/fixtures/modules/system_users/spec/fixtures/modules/system_users/spec/fixtures/modules/system_users/spec/fixtures/modules/system_users/spec/fixtures/modules/system_users/spec/fixtures/modules/system_users/spec/fixtures/modules/stdlib/lib/puppet/parser/functions/defined_with_params.rb
+E, [2016-12-19T14:47:41.804430 #12731] ERROR -- second-run-centos-7: ----------------------
+E, [2016-12-19T14:47:41.804441 #12731] ERROR -- second-run-centos-7: ------Backtrace-------
+E, [2016-12-19T14:47:41.804451 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/net-scp-1.2.1/lib/net/scp/upload.rb:117:in `stat'
+E, [2016-12-19T14:47:41.804462 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/net-scp-1.2.1/lib/net/scp/upload.rb:117:in `set_current'
+E, [2016-12-19T14:47:41.804472 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/net-scp-1.2.1/lib/net/scp/upload.rb:103:in `next_item_state'
+E, [2016-12-19T14:47:41.804513 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/net-scp-1.2.1/lib/net/scp.rb:400:in `await_response_state'
+E, [2016-12-19T14:47:41.804524 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/net-scp-1.2.1/lib/net/scp.rb:369:in `block (3 levels) in start_command'
+E, [2016-12-19T14:47:41.804535 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/net-ssh-3.2.0/lib/net/ssh/connection/channel.rb:320:in `call'
+E, [2016-12-19T14:47:41.804545 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/net-ssh-3.2.0/lib/net/ssh/connection/channel.rb:320:in `process'
+E, [2016-12-19T14:47:41.804555 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/net-ssh-3.2.0/lib/net/ssh/connection/session.rb:226:in `block in preprocess'
+E, [2016-12-19T14:47:41.804572 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/net-ssh-3.2.0/lib/net/ssh/connection/session.rb:226:in `each'
+E, [2016-12-19T14:47:41.804584 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/net-ssh-3.2.0/lib/net/ssh/connection/session.rb:226:in `preprocess'
+E, [2016-12-19T14:47:41.804595 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/net-ssh-3.2.0/lib/net/ssh/connection/session.rb:206:in `process'
+E, [2016-12-19T14:47:41.804605 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/net-ssh-3.2.0/lib/net/ssh/connection/session.rb:170:in `block in loop'
+E, [2016-12-19T14:47:41.804615 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/net-ssh-3.2.0/lib/net/ssh/connection/session.rb:170:in `loop'
+E, [2016-12-19T14:47:41.804625 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/net-ssh-3.2.0/lib/net/ssh/connection/session.rb:170:in `loop'
+E, [2016-12-19T14:47:41.804635 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/net-ssh-3.2.0/lib/net/ssh/connection/channel.rb:269:in `wait'
+E, [2016-12-19T14:47:41.804645 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/test-kitchen-1.14.2/lib/kitchen/transport/ssh.rb:170:in `each'
+E, [2016-12-19T14:47:41.804655 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/test-kitchen-1.14.2/lib/kitchen/transport/ssh.rb:170:in `block in upload'
+E, [2016-12-19T14:47:41.804665 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/2.2.0/benchmark.rb:288:in `measure'
+E, [2016-12-19T14:47:41.804675 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/test-kitchen-1.14.2/lib/kitchen/transport/ssh.rb:160:in `upload'
+E, [2016-12-19T14:47:41.804685 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/test-kitchen-1.14.2/lib/kitchen/provisioner/base.rb:72:in `block in call'
+E, [2016-12-19T14:47:41.804695 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/test-kitchen-1.14.2/lib/kitchen/transport/base.rb:89:in `initialize'
+E, [2016-12-19T14:47:41.804706 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/test-kitchen-1.14.2/lib/kitchen/transport/ssh.rb:435:in `new'
+E, [2016-12-19T14:47:41.804716 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/test-kitchen-1.14.2/lib/kitchen/transport/ssh.rb:435:in `create_new_connection'
+E, [2016-12-19T14:47:41.804726 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/test-kitchen-1.14.2/lib/kitchen/transport/ssh.rb:90:in `connection'
+E, [2016-12-19T14:47:41.804736 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/test-kitchen-1.14.2/lib/kitchen/provisioner/base.rb:68:in `call'
+E, [2016-12-19T14:47:41.804746 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/test-kitchen-1.14.2/lib/kitchen/instance.rb:384:in `block in converge_action'
+E, [2016-12-19T14:47:41.804756 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/test-kitchen-1.14.2/lib/kitchen/instance.rb:527:in `synchronize_or_call'
+E, [2016-12-19T14:47:41.804767 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/test-kitchen-1.14.2/lib/kitchen/instance.rb:489:in `block in action'
+E, [2016-12-19T14:47:41.804777 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/2.2.0/benchmark.rb:288:in `measure'
+E, [2016-12-19T14:47:41.804787 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/test-kitchen-1.14.2/lib/kitchen/instance.rb:488:in `action'
+E, [2016-12-19T14:47:41.804801 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/test-kitchen-1.14.2/lib/kitchen/instance.rb:380:in `converge_action'
+E, [2016-12-19T14:47:41.804813 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/test-kitchen-1.14.2/lib/kitchen/instance.rb:359:in `block in transition_to'
+E, [2016-12-19T14:47:41.804823 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/test-kitchen-1.14.2/lib/kitchen/instance.rb:358:in `each'
+E, [2016-12-19T14:47:41.804834 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/test-kitchen-1.14.2/lib/kitchen/instance.rb:358:in `transition_to'
+E, [2016-12-19T14:47:41.804844 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/test-kitchen-1.14.2/lib/kitchen/instance.rb:135:in `converge'
+E, [2016-12-19T14:47:41.804854 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/test-kitchen-1.14.2/lib/kitchen/command.rb:197:in `public_send'
+E, [2016-12-19T14:47:41.804864 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/test-kitchen-1.14.2/lib/kitchen/command.rb:197:in `run_action_in_thread'
+E, [2016-12-19T14:47:41.804874 #12731] ERROR -- second-run-centos-7: /Users/geoff/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/test-kitchen-1.14.2/lib/kitchen/command.rb:169:in `block (2 levels) in run_action'
+E, [2016-12-19T14:47:41.804884 #12731] ERROR -- second-run-centos-7: ----End Backtrace-----
