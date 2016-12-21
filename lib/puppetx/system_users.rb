@@ -1,5 +1,6 @@
 module PuppetX
   module SystemUsers
+    PASSWD_FILE = '/etc/passwd'
     FILES_TO_DISABLE = [
       '.forward',
       '.netrc',
@@ -10,13 +11,17 @@ module PuppetX
     # find the home directories in use on this system by looking for unique
     # directories in /etc/passwd
     def self.get_homedirs()
-      list = File.readlines('/etc/passwd').reject { |line|
-        line =~ /^\s+$/ or line =~ /^#/
-      }.map do |line|
-        # skip entirely whitespace or commented out
-        line.split(':')[5]
+      if File.exists?(PASSWD_FILE)
+        list = File.readlines(PASSWD_FILE).reject { |line|
+          line =~ /^\s+$/ or line =~ /^#/
+        }.map do |line|
+          # skip entirely whitespace or commented out
+          line.split(':')[5]
+        end
+        list.uniq.sort
+      else
+        raise "#{PASSWD_FILE} file not found"
       end
-      list.uniq.sort
     end
 
     def self.get_targets()

@@ -1,11 +1,12 @@
 # test custom fact at lib/facter/user_audit.rb
-require 'spec_helper'
+require 'henchman/spec_helper'
 require 'facter/user_audit'
-
 # important! must load PP before fakefs - https://github.com/fakefs/fakefs/issues/99
 # otherwise fakefs breaks the include function iself ;-)
 require 'pp'
+require 'fakefs_testcase'
 require 'fakefs/spec_helpers'
+
 describe SystemUsers::Fact do
 
   # IMPORTANT - use a fake filesystem for all tests.  We load a different whole
@@ -16,15 +17,13 @@ describe SystemUsers::Fact do
   # /etc/passwd
   #
   it "duplicate uid detected" do
-    config = File.dirname(File.expand_path(__FILE__)) + '/../fixtures/fakefs/duplicate_uid'
-    FakeFS::FileSystem.clone(config, '/')
+    FakeFSTestcase.activate_testcase('duplicate_uid')
 
     expect(SystemUsers::Fact.run_fact()[:duplicate][:uid]).to eq ['1','6']
   end
-
+  #
   it "duplicate username detected" do
-    config = File.dirname(File.expand_path(__FILE__)) + '/../fixtures/fakefs/duplicate_username'
-    FakeFS::FileSystem.clone(config, '/')
+    FakeFSTestcase.activate_testcase('duplicate_username')
 
     expect(SystemUsers::Fact.run_fact()[:duplicate][:username]).to eq ['daemon', 'dupuser']
   end
@@ -33,15 +32,13 @@ describe SystemUsers::Fact do
   # /etc/group
   #
   it "duplicate gid detected" do
-    config = File.dirname(File.expand_path(__FILE__)) + '/../fixtures/fakefs/duplicate_gid'
-    FakeFS::FileSystem.clone(config, '/')
+    FakeFSTestcase.activate_testcase('duplicate_gid')
 
     expect(SystemUsers::Fact.run_fact()[:duplicate][:gid]).to eq ['1002','1003']
   end
 
   it "duplicate groupname detected" do
-    config = File.dirname(File.expand_path(__FILE__)) + '/../fixtures/fakefs/duplicate_groupname'
-    FakeFS::FileSystem.clone(config, '/')
+    FakeFSTestcase.activate_testcase('duplicate_groupname')
 
     expect(SystemUsers::Fact.run_fact()[:duplicate][:groupname]).to eq ['apache', 'dupgroup']
   end

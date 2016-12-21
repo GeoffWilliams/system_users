@@ -1,3 +1,7 @@
-spec/fixtures
-!spec/fixtures/fakefs/**
+test/fixtures
+!test/fixtures/fakefs/**
 Gemfile.lock
+.tmp
+.librarian
+.kitchen
+Puppetfile.lock

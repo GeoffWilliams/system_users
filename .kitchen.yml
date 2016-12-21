@@ -11,8 +11,9 @@ provisioner:
 #  modules_path: modules:/tmp/kitchen/spec/fixtures/modules
 #  modules_path: modules:spec/fixtures/modules
 #  modules_path: modules:spec/fixtures/modules
-  modules_path: modules
+#  modules_path: modules
 #  hiera_data_path: hieradata
+  modules_path: test/fixtures/modules
   require_chef_for_busser: false
   resolve_with_librarian_puppet: false
   verifier:
