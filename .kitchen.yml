@@ -14,7 +14,7 @@ provisioner:
 #  modules_path: modules
 #  hiera_data_path: hieradata
   modules_path: test/fixtures/modules
-  require_chef_for_busser: false
+  #require_chef_for_busser: false
   resolve_with_librarian_puppet: false
   verifier:
     ruby_bindir: '/opt/puppetlabs/bin'
