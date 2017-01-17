@@ -1,6 +1,4 @@
 /spec/fixtures/modules/
-test/fixtures
-!test/fixtures/fakefs/**
 Gemfile.lock
 .tmp
 .librarian

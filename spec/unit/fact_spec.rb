@@ -49,4 +49,10 @@ describe SystemUsers::Fact do
     expect(SystemUsers::Fact.run_fact()[:duplicate][:root_alias]).to eq ['nuroot']
   end
 
+  it "empty password detected" do
+    FakeFSTestcase.activate_testcase('empty_password')
+    expect(SystemUsers::Fact.run_fact()[:empty_password]).to eq ['nopasswd']
+  end
+
+
 end

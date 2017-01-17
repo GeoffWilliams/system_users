@@ -9,6 +9,7 @@ module SystemUsers
   module Fact
     PASSWD_FILE = '/etc/passwd'
     GROUP_FILE  = '/etc/group'
+    SHADOW_FILE = '/etc/shadow'
 
     def self.add_fact()
       Facter.add(:user_audit) do
@@ -48,6 +49,20 @@ module SystemUsers
       dups.sort()
     end
 
+    def self.empty_password()
+      list = File.readlines(SHADOW_FILE).reject { |line|
+        # skip entirely whitespace or commented out
+        reject = (line =~ /^\s*$/).is_a?(Fixnum) or (line =~ /^#/).is_a?(Fixnum)
+        reject |= line.split(':')[1] != ''
+
+        reject
+      }.map { |line|
+        line.split(':')[0]
+      }
+
+      list
+    end
+
     def self.run_fact()
       {
         :duplicate => {
@@ -56,7 +71,8 @@ module SystemUsers
           :gid        => get_dups(GROUP_FILE, 2),
           :groupname  => get_dups(GROUP_FILE, 0),
           :root_alias => root_aliases(),
-        }
+        },
+        :empty_password => empty_password(),
       }
     end
 
