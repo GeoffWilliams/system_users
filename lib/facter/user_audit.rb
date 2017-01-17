@@ -7,12 +7,32 @@
 #lock accounts with no password
 module SystemUsers
   module Fact
+    PASSWD_FILE = '/etc/passwd'
+    GROUP_FILE  = '/etc/group'
+
     def self.add_fact()
       Facter.add(:user_audit) do
         setcode do
           SystemUsers::Fact::run_fact()
         end
       end
+    end
+
+    def self.root_aliases
+      list = File.readlines(PASSWD_FILE).reject { |line|
+        # skip entirely whitespace or commented out
+        reject = (line =~ /^\s*$/).is_a?(Fixnum)or (line =~ /^#/).is_a?(Fixnum)
+
+        # only for UID == 0 (root power)
+        reject |= line.split(':')[2] != '0'
+
+        # skip root
+        reject |= line.split(':')[0] == 'root'
+
+        reject
+      }.map { |line|
+        line.split(':')[0]
+      }.uniq.sort
     end
 
     def self.get_dups(filename, col)
@@ -22,7 +42,7 @@ module SystemUsers
       }.map { |line|
         line.split(':')[col]
       }
-      
+
       # http://stackoverflow.com/a/8922049
       dups = list.group_by{ |e| e }.select { |k, v| v.size > 1 }.map(&:first)
       dups.sort()
@@ -31,10 +51,11 @@ module SystemUsers
     def self.run_fact()
       {
         :duplicate => {
-          :uid        => get_dups('/etc/passwd', 2),
-          :username   => get_dups('/etc/passwd', 0),
-          :gid        => get_dups('/etc/group', 2),
-          :groupname  => get_dups('/etc/group', 0)
+          :uid        => get_dups(PASSWD_FILE, 2),
+          :username   => get_dups(PASSWD_FILE, 0),
+          :gid        => get_dups(GROUP_FILE, 2),
+          :groupname  => get_dups(GROUP_FILE, 0),
+          :root_alias => root_aliases(),
         }
       }
     end

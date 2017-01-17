@@ -2,7 +2,7 @@ module FakeFSTestcase
   def self.testcase_path(testcase)
     config = File.realpath(
       File.dirname(File.expand_path(__FILE__)) +
-      '/../fixtures/fakefs/' + testcase
+      '/fixtures/fakefs/' + testcase
     )
   end
 

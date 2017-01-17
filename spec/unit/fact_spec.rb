@@ -1,5 +1,6 @@
 # test custom fact at lib/facter/user_audit.rb
-require 'henchman/spec_helper'
+#require 'henchman/spec_helper'
+require 'spec_helper'
 require 'facter/user_audit'
 # important! must load PP before fakefs - https://github.com/fakefs/fakefs/issues/99
 # otherwise fakefs breaks the include function iself ;-)
@@ -41,6 +42,11 @@ describe SystemUsers::Fact do
     FakeFSTestcase.activate_testcase('duplicate_groupname')
 
     expect(SystemUsers::Fact.run_fact()[:duplicate][:groupname]).to eq ['apache', 'dupgroup']
+  end
+
+  it "root alias detected" do
+    FakeFSTestcase.activate_testcase('root_alias')
+    expect(SystemUsers::Fact.run_fact()[:duplicate][:root_alias]).to eq ['nuroot']
   end
 
 end

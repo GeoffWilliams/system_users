@@ -1,7 +1,6 @@
 # test type and provider at lib/puppet/type/system_users_disable_overrides.rb
 require 'rspec/mocks'
-require 'henchman/spec_helper'
-
+require 'spec_helper'
 #require 'spec_helper'
 require 'find'
 require 'puppetx/system_users'
