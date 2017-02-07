@@ -10,6 +10,6 @@ class system_users::lock_empty_password($lock_method = '*') {
       password => $lock_method,
     }
   } else {
-    warm("user_audit fact missing - system_users module seems broken?")
+    warning("user_audit fact missing - system_users module seems broken?")
   }
 }
