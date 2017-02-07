@@ -1,18 +1,13 @@
+require 'puppetx/system_users_constants'
+
 module PuppetX
   module SystemUsers
-    PASSWD_FILE = '/etc/passwd'
-    FILES_TO_DISABLE = [
-      '.forward',
-      '.netrc',
-      '.rhosts'
-    ]
-
 
     # find the home directories in use on this system by looking for unique
     # directories in /etc/passwd
     def self.get_homedirs()
-      if File.exists?(PASSWD_FILE)
-        list = File.readlines(PASSWD_FILE).reject { |line|
+      if File.exists?(SystemUsersConstants::PASSWD_FILE)
+        list = File.readlines(SystemUsersConstants::PASSWD_FILE).reject { |line|
           line =~ /^\s+$/ or line =~ /^#/
         }.map do |line|
           # skip entirely whitespace or commented out
@@ -20,14 +15,14 @@ module PuppetX
         end
         list.uniq.sort
       else
-        raise "#{PASSWD_FILE} file not found"
+        raise "#{SystemUsersConstants::PASSWD_FILE} file not found"
       end
     end
 
     def self.get_targets()
       targets = []
       get_homedirs().each { |homedir|
-        FILES_TO_DISABLE.each { |f|
+        SystemUsersConstants::FILES_TO_DISABLE.each { |f|
           munged_filename = File.join(homedir, f)
 
           if File.exists?(munged_filename)

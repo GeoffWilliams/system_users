@@ -54,5 +54,9 @@ describe SystemUsers::Fact do
     expect(SystemUsers::Fact.run_fact()[:empty_password]).to eq ['nopasswd']
   end
 
+  it "empty password detected on aix" do
+    FakeFSTestcase.activate_testcase('aix_empty_password')
+    expect(SystemUsers::Fact.empty_password_aix()).to eq ['nopasswd']
+  end
 
 end
