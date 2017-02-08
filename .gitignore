@@ -4,3 +4,4 @@ Gemfile.lock
 .librarian
 .kitchen
 Puppetfile.lock
+pkg
