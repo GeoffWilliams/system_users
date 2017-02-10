@@ -59,4 +59,26 @@ describe SystemUsers::Fact do
     expect(SystemUsers::Fact.empty_password_aix()).to eq ['nopasswd']
   end
 
+  it "finds the low UIDs correctly" do
+    FakeFSTestcase.activate_testcase('low_uids')
+    expect(SystemUsers::Fact.low_uids()).to eq [
+      "adm",
+      "bin",
+      "daemon",
+      "dbus",
+      "ftp",
+      "games",
+      "halt",
+      "lp",
+      "mail",
+      "nobody",
+      "operator",
+      "shutdown",
+      "sshd",
+      "sync",
+      "systemd-network",
+      "tss",
+    ]
+  end
+
 end
