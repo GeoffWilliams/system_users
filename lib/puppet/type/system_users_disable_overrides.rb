@@ -1,7 +1,7 @@
 require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:system_users_disable_overrides) do
-  @doc = "Disable the files .netrc, .forward, .rhosts by changing the owner to root and the permissions to 000"
+  @doc = "Disable the files .netrc, .forward, .rhosts and .shosts by changing the owner to root and the permissions to 000"
 
   newproperty(:ensure) do
     newvalue(:overrides_disabled) do

@@ -6,7 +6,8 @@ module SystemUsersConstants
   FILES_TO_DISABLE  = [
     '.forward',
     '.netrc',
-    '.rhosts'
+    '.rhosts',
+    '.shosts',
   ]
 
 end
