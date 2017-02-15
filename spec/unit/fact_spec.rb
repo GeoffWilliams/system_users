@@ -81,4 +81,26 @@ describe SystemUsers::Fact do
     ]
   end
 
+  it "processes homedirs correctly" do
+    FakeFSTestcase.activate_testcase('homedirs')
+
+    # files in FakesFS are always 644 no matter what the host filesystem says,
+    # however, we can chmod before running our test to create the world writable
+    # file.  For some reason, files beginning '.' are not readable in the fact
+    # when on fakefs, however on the system the exact same layout works fine.
+    # This is as good as I can get it.
+    File.chmod(0777, "/home/showoff/vb")
+
+
+    homedirs = SystemUsers::Fact.homedirs()
+
+    expect(homedirs["root"]['path']).to eq "/root"
+    expect(homedirs["dbus"]['path']).to eq "/"
+
+    # wanted to test for
+    stat  = File.stat('/home/showoff/vb')
+    mode  = "%04o" % (stat.mode & 0777)
+    expect(homedirs["showoff"]['og_write'][0]).to eq "/home/showoff/vb"
+
+  end
 end

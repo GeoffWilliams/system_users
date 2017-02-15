@@ -6,7 +6,7 @@
 #csutom fact - dup uids gids usernames groups
 #lock accounts with no password
 require 'puppetx/system_users_constants'
-
+require 'etc'
 module SystemUsers
   module Fact
     def self.add_fact()
@@ -20,7 +20,7 @@ module SystemUsers
     def self.low_uids
       list = File.readlines(SystemUsersConstants::PASSWD_FILE).reject { |line|
         # skip entirely whitespace or commented out
-        reject = (line =~ /^\s*$/).is_a?(Fixnum)or (line =~ /^#/).is_a?(Fixnum)
+        reject = !!(line =~ /^\s*$/ or line =~ /^\s*#/)
 
         # skip IDs >= 500 leaving only the low ones
         reject |= line.split(':')[3].to_i >= 500
@@ -37,7 +37,7 @@ module SystemUsers
     def self.root_aliases
       list = File.readlines(SystemUsersConstants::PASSWD_FILE).reject { |line|
         # skip entirely whitespace or commented out
-        reject = (line =~ /^\s*$/).is_a?(Fixnum)or (line =~ /^#/).is_a?(Fixnum)
+        reject = !!(line =~ /^\s*$/ or line =~ /^\s*#/)
 
         # only for UID == 0 (root power)
         reject |= line.split(':')[2] != '0'
@@ -62,6 +62,89 @@ module SystemUsers
       # http://stackoverflow.com/a/8922049
       dups = list.group_by{ |e| e }.select { |k, v| v.size > 1 }.map(&:first)
       dups.sort()
+    end
+
+    # Return a hash of usernames and homedirs for use later
+    def self.homedirs()
+      data = {}
+      File.readlines(SystemUsersConstants::PASSWD_FILE).reject { |line|
+        # skip entirely whitespace or commented out
+        reject = !!(line =~ /^\s*$/ or line =~ /^\s*#/)
+      }.each { |line|
+        # Fact to contain structured data representing the homedir
+        # "don" => {
+        #   path => "/home/don",
+        #   ensure  => directory,
+        #   owner   => "don",
+        #   group   => "don",
+        #   mode    => "0700",
+        # },
+        # "mon" => {
+        #   path => /home/mon,
+        #   ensure  => absent,
+        #   owner   => nil,
+        #   group   => nil,
+        #   mode    => nil,
+        # }
+        user = line.split(':')[0]
+        path  = line.split(':')[5]
+        if File.exists?(path)
+          if File.symlink?(path)
+            type = "link"
+          elsif Dir.exists?(path)
+            type = "directory"
+          else
+            type = "file"
+          end
+
+          # we may not be able to resolve the UID to a name if we're inside a
+          # testcase or things are really broken os just print the UID/GID
+          stat  = File.stat(path)
+          mode  = "%04o" % (stat.mode & 0777)
+
+          # UID/user
+          begin
+            owner = Etc.getpwuid(stat.uid).name
+          rescue ArgumentError
+            owner = stat.uid
+          end
+
+          # GID/group
+          begin
+            group = Etc.getpwuid(stat.gid).name
+          rescue ArgumentError
+            owner = stat.gid
+          end
+
+          # find any world/group writable files in the top level homedir, do NOT
+          # perform a complete find as this will take too much resources
+          og_write = Dir.glob(File.join(path, "*"), File::FNM_DOTMATCH).reject { |f|
+            rej = (f =~ /^\.{1,2}$/)
+            if ! rej
+              stat = File.stat(f)
+              rej = ! ((stat.mode & 00002) == 00002) and ! ((stat.mode & 00020) == 00020)
+            end
+
+            rej
+          }
+        else
+          type      = "absent"
+          owner     = nil
+          group     = nil
+          mode      = nil
+          og_write  = nil
+        end
+        data[user] = {
+          "path"      => path,
+          "ensure"    => type,
+          "owner"     => owner,
+          "group"     => group,
+          "mode"      => mode,
+          "og_write"  => og_write,
+        }
+      }
+
+      data
     end
 
     # AIX handles passwords differently to regular solaris and linux boxes - it
@@ -99,7 +182,7 @@ module SystemUsers
     def self.empty_password_regular()
       list = File.readlines(SystemUsersConstants::SHADOW_FILE).reject { |line|
         # skip entirely whitespace or commented out
-        reject = (line =~ /^\s*$/).is_a?(Fixnum) or (line =~ /^#/).is_a?(Fixnum)
+        reject = !!(line =~ /^\s*$/ or line =~ /^\s*#/)
         reject |= line.split(':')[1] != ''
 
         reject
@@ -131,6 +214,7 @@ module SystemUsers
         },
         :empty_password => empty_password(),
         :low_uids => low_uids(),
+        :homedirs => homedirs(),
       }
     end
 
