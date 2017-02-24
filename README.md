@@ -4,10 +4,6 @@
 #### Table of Contents
 
 1. [Description](#description)
-1. [Setup - The basics of getting started with system_users](#setup)
-    * [What system_users affects](#what-system_users-affects)
-    * [Setup requirements](#setup-requirements)
-    * [Beginning with system_users](#beginning-with-system_users)
 1. [Usage - Configuration options and additional functionality](#usage)
 1. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 1. [Limitations - OS compatibility, etc.](#limitations)
@@ -15,69 +11,91 @@
 
 ## Description
 
-Start with a one- or two-sentence summary of what the module does and/or what
-problem it solves. This is your 30-second elevator pitch for your module.
-Consider including OS/Puppet version it works with.
+This module provides various classes for locking down local users on a system in order to set password policies, remove invalid users, etc.  The other main feature of the module is to provide a fact called `user_audit` that includes information about all local users, any suspicious files they possess and details of users breaking various aspects of the login system integrity such as duplicated or mismatched UIDs or GIDs.
 
-You can give more descriptive information in a second paragraph. This paragraph
-should answer the questions: "What does this module *do*?" and "Why would I use
-it?" If your module has a range of functionality (installation, configuration,
-management, etc.), this is the time to mention it.
+The `user_audit` fact is structured as follows:
 
-## Setup
+```javascript
+"user_audit": {
+  "empty_password": [],         // array of users who have empty passwords
+  "low_uids": [],               // array of 'system' users (UID < 500)
+  "homedirs": {                 // home directory information for each user (only one shown for clarity)
+    "root": {
+      "path": "/root",
+      "ensure": "directory",
+      "owner": "root",
+      "group": "root",
+      "mode": "0550",
+      "og_write": []            // array of other/group writable dotfiles in the top level directory
+    },
+  },
+  "local_users": {              // user ID information for all local users (only one shown for clarity, password info on RHEL/Solaris only)
+    "root": {
+      "uid": "0",
+      "gid": "0",
+      "comment": "root",
+      "home": "/root",
+      "shell": "/bin/bash",
+      "last_change_days": "17207",
+      "change_allowed_days": "0",
+      "must_change_days": "99999",
+      "warning_days": "7",
+      "expires_days": "",
+      "disabled_days": ""
+    },
+  },
+  "duplicate": {
+    "uid": [],                // array of duplicated UIDs
+    "username": [],           // array of duplicated usernames
+    "gid": [],                // array of duplicated GIDs
+    "groupname": [],          // array of duplicated groupnames
+    "root_alias": []          // array of duplicated root users (UID==0)
+  }
+},
+```
 
-### What system_users affects **OPTIONAL**
-
-If it's obvious what your module touches, you can skip this section. For
-example, folks can probably figure out that your mysql_instance module affects
-their MySQL instances.
-
-If there's more that they should know about, though, this is the place to mention:
-
-* A list of files, packages, services, or operations that the module will alter,
-  impact, or execute.
-* Dependencies that your module automatically installs.
-* Warnings or other important notices.
-
-### Setup Requirements **OPTIONAL**
-
-If your module requires anything extra before setting up (pluginsync enabled,
-etc.), mention it here.
-
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you might want to include an additional "Upgrading" section
-here.
-
-### Beginning with system_users
-
-The very basic steps needed for a user to get the module up and running. This
-can include setup steps, if necessary, or it can be an example of the most
-basic use of the module.
 
 ## Usage
 
-This section is where you describe how to customize, configure, and do the
-fancy stuff with your module here. It's especially helpful if you include usage
-examples and code samples for doing things with your module.
+Most classes will need to be loaded using the `class` resource syntax in order to pass the appropriate class defaults, eg:
+
+```puppet
+class { "foo:bar":
+  param1 => "value1",
+  param2 => "value2",
+}
+```
+
+Parameters, where available, are documented inside the individual classes.  See [Reference section](#reference).
 
 ## Reference
+Reference documentation is generated directly from source code using [puppet-strings](https://github.com/puppetlabs/puppet-strings).  You may regenerate the documentation by running:
 
-Here, include a complete list of your module's classes, types, providers,
-facts, along with the parameters for each. Users refer to this section (thus
-the name "Reference") to find specific details; most users don't read it per
-se.
+```shell
+bundle exec puppet strings
+```
+
+Or you may view the current [generated documentation](https://rawgit.com/GeoffWilliams/system_users/master/doc/index.html).
+
+The documentation is no substitute for reading and understanding the module source code, and all users should ensure they are familiar and comfortable with the operations this module performs before using it.
 
 ## Limitations
-
-* You *must* use at least version 4.14.0 of [puppetlabs-stdlib](https://forge.puppetlabs.com/puppetlabs/stdlib).  Earlier versions have a bug where attempting to delete NIS users gives the error `Could not evaluate: undefined method `chomp' for nil:NilClass`
+* AIX 6.1/7.1, RHEL 6/7, Solaris 10 only
+* Not supported by Puppet, Inc.
 
 ## Development
 
-Since your module is awesome, other users will want to play with it. Let them
-know what the ground rules for contributing are.
+PRs accepted :)
 
-## Release Notes/Contributors/Etc. **Optional**
+## Testing
+This module supports testing using [PDQTest](https://github.com/GeoffWilliams/pdqtest).
 
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You can also add any additional sections you feel
-are necessary or important to include here. Please use the `## ` header.
+
+Test can be executed with:
+
+```
+bundle install
+bundle exec pdqtest all
+```
+
+See `.travis.yml` for a working CI example

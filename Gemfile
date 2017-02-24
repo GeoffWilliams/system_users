@@ -6,3 +6,4 @@ gem 'puppet'
 gem 'puppetlabs_spec_helper', '>= 1.0.0'
 gem 'fakefs', '0.10.1', require: false
 gem 'pdqtest', '0.1.11'
+gem 'puppet-strings'
