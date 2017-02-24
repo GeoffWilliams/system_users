@@ -203,18 +203,66 @@ module SystemUsers
       bad_users
     end
 
+    # representation of all users in /etc/passwd
+    def self.local_users()
+      data = {}
+      File.readlines(SystemUsersConstants::PASSWD_FILE).reject { |line|
+        # skip entirely whitespace or commented out
+        reject = !!(line =~ /^\s*$/ or line =~ /^\s*#/)
+
+        reject
+      }.each { |line|
+        fields = line.strip.split(':')
+
+        data[fields[0]] = {
+          "uid"     => fields[2],
+          "gid"     => fields[3],
+          "comment" => fields[4],
+          "home"    => fields[5],
+          "shell"   => fields[6],
+        }
+
+      }
+
+      # if NOT on AIX, read the shadow file and figure out password validity (
+      # AIX has its own crazy format and there's no requirement to deal with it
+      # right now)
+      if Facter.value(:os)['family'] != 'AIX'
+        File.readlines(SystemUsersConstants::SHADOW_FILE).reject { |line|
+          # skip entirely whitespace or commented out
+          reject = !!(line =~ /^\s*$/ or line =~ /^\s*#/)
+
+          reject
+        }.each { |line|
+          fields = line.strip.split(':')
+
+          if data.include?(fields[0])
+            data[fields[0]]["last_change_days"]     = fields[2]
+            data[fields[0]]["change_allowed_days"]  = fields[3]
+            data[fields[0]]["must_change_days"]     = fields[4]
+            data[fields[0]]["warning_days"]         = fields[5]
+            data[fields[0]]["expires_days"]         = fields[6]
+            data[fields[0]]["disabled_days"]        = fields[7]
+          end
+        }
+      end
+
+      data
+    end
+
     def self.run_fact()
       {
-        :duplicate => {
+        :empty_password => empty_password(),
+        :low_uids       => low_uids(),
+        :homedirs       => homedirs(),
+        :local_users    => local_users(),
+        :duplicate      => {
           :uid        => get_dups(SystemUsersConstants::PASSWD_FILE, 2),
           :username   => get_dups(SystemUsersConstants::PASSWD_FILE, 0),
           :gid        => get_dups(SystemUsersConstants::GROUP_FILE, 2),
           :groupname  => get_dups(SystemUsersConstants::GROUP_FILE, 0),
           :root_alias => root_aliases(),
         },
-        :empty_password => empty_password(),
-        :low_uids => low_uids(),
-        :homedirs => homedirs(),
       }
     end
 

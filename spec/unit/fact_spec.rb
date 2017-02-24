@@ -103,4 +103,24 @@ describe SystemUsers::Fact do
     expect(homedirs["showoff"]['og_write'][0]).to eq "/home/showoff/vb"
 
   end
+
+  it "processes localusers correctly" do
+    FakeFSTestcase.activate_testcase('local_users')
+
+    local_users = SystemUsers::Fact.local_users()
+
+    # just pick one entry and check the fields came through ok
+    expect(local_users["ftp"]["uid"]).to eq "14"
+    expect(local_users["ftp"]["gid"]).to eq "50"
+    expect(local_users["ftp"]["comment"]).to eq "FTP User"
+    expect(local_users["ftp"]["home"]).to eq "/var/ftp"
+    expect(local_users["ftp"]["shell"]).to eq "/sbin/nologin"
+
+    expect(local_users["ftp"]["last_change_days"]).to eq "15980"
+    expect(local_users["ftp"]["change_allowed_days"]).to eq "0"
+    expect(local_users["ftp"]["must_change_days"]).to eq "99999"
+    expect(local_users["ftp"]["warning_days"]).to eq "7"
+    expect(local_users["ftp"]["expires_days"]).to eq nil
+    expect(local_users["ftp"]["disabled_days"]).to eq nil
+  end
 end
