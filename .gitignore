@@ -6,3 +6,4 @@ Gemfile.lock
 Puppetfile.lock
 /pkg
 .yardoc
+.idea

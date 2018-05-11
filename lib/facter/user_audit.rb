@@ -17,13 +17,13 @@ module SystemUsers
       end
     end
 
-    def self.low_uids
+    def self.get_uids(max)
       list = File.readlines(SystemUsersConstants::PASSWD_FILE).reject { |line|
         # skip entirely whitespace or commented out
         reject = !!(line =~ /^\s*$/ or line =~ /^\s*#/)
 
         # skip IDs >= 500 leaving only the low ones
-        reject |= line.split(':')[3].to_i >= 500
+        reject |= line.split(':')[3].to_i >= max
 
         # skip root
         reject |= line.split(':')[0] == 'root'
@@ -33,6 +33,15 @@ module SystemUsers
         line.split(':')[0]
       }.uniq.sort
     end
+
+    def self.low_uids
+      get_uids(500)
+    end
+
+    def self.system_uids
+      get_uids(1000)
+    end
+
 
     def self.root_aliases
       list = File.readlines(SystemUsersConstants::PASSWD_FILE).reject { |line|
@@ -254,6 +263,7 @@ module SystemUsers
       {
         :empty_password => empty_password(),
         :low_uids       => low_uids(),
+        :system_uids    => system_uids(),
         :homedirs       => homedirs(),
         :local_users    => local_users(),
         :duplicate      => {

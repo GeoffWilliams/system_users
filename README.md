@@ -18,7 +18,8 @@ The `user_audit` fact is structured as follows:
 ```javascript
 "user_audit": {
   "empty_password": [],         // array of users who have empty passwords
-  "low_uids": [],               // array of 'system' users (UID < 500)
+  "low_uids": [],               // array of 'low uid' users (UID < 500)
+  "system_uids": [],            // array of 'system' users (UID < 1000) 
   "homedirs": {                 // home directory information for each user (only one shown for clarity)
     "root": {
       "path": "/root",

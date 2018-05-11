@@ -18,6 +18,12 @@ describe 'system_users::disable_system_account' do
       }
     end
 
+    let :params do
+      {
+          :uid_range => "low_uids",
+      }
+    end
+
     # shutdown should not have its shell changed but should be locked
     it { should contain_user("shutdown").with(
       {
