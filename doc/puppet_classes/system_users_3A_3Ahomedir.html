@@ -82,7 +82,24 @@
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>mode</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>unset</tt>)</em>
+      
+      
+    </li>
+  
+</ul>
+
 
 </div><div class="method_details_list">
   <table class="source_code">
@@ -111,29 +128,65 @@
 22
 23
 24
-25</pre>
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/homedir.pp', line 5</span>
 
-class system_users::homedir {
+class system_users::homedir(
+    $mode = unset,
+) {
   $homedirs = dig($facts, &#39;user_audit&#39;, &#39;homedirs&#39;)
+
   if $homedirs {
+    # skip system uids as these users often share vital system directories
+    # between themselves such as /sbin, /, /var/lib, etc...
     $homedirs.filter |$user, $hash| {
-      ! $user in $facts[&#39;user_audit&#39;][&#39;low_uids&#39;] and
+      ! $user in $facts[&#39;user_audit&#39;][&#39;system_uids&#39;] and
       $user != &quot;root&quot; and
-      ! $hash[&#39;path&#39;] in [&quot;/&quot;, &quot;/bin&quot;, &quot;/usr/bin&quot;, &quot;/usr/sbin&quot;, &quot;/sbin&quot;, &quot;/dev/null&quot;]
+      ! (
+        $hash[&#39;path&#39;] =~ /^\/bin/ or
+        $hash[&#39;path&#39;] =~ /^\/boot/ or
+        $hash[&#39;path&#39;] =~ /^\/dev/ or
+        $hash[&#39;path&#39;] =~ /^\/etc/ or
+        $hash[&#39;path&#39;] =~ /^\/lib/ or
+        $hash[&#39;path&#39;] =~ /^\/media/ or
+        $hash[&#39;path&#39;] =~ /^\/mnt/ or
+        $hash[&#39;path&#39;] =~ /^\/opt/ or
+        $hash[&#39;path&#39;] =~ /^\/proc/ or
+        $hash[&#39;path&#39;] =~ /^\/run/ or
+        $hash[&#39;path&#39;] =~ /^\/sbin/ or
+        $hash[&#39;path&#39;] =~ /^\/srv/ or
+        $hash[&#39;path&#39;] =~ /^\/sys/ or
+        $hash[&#39;path&#39;] =~ /^\/tmp/ or
+        $hash[&#39;path&#39;] =~ /^\/usr/ or
+        $hash[&#39;path&#39;] =~ /^\/var/
+      )
     }.each |$user, $hash| {
-      # do not attempt permission corrections as doing so may trash the system.
-      # Also, skip low uids as these users often share vital system directories
-      # between themselves such as /sbin, /, /var/lib, etc...
-      $res = {
-        $hash[&#39;path&#39;] =&gt; {
-          &quot;ensure&quot; =&gt; &quot;directory&quot;,
-          &quot;owner&quot;  =&gt; $user,
-        }
+
+      file { $hash[&#39;path&#39;]:
+        ensure =&gt; directory,
+        owner  =&gt; $user,
+        mode   =&gt; $mode,
       }
-      ensure_resources(&quot;file&quot;, $res)
     }
   }
 }</pre>
