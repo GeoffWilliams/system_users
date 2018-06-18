@@ -1,6 +1,6 @@
 {
   "name": "geoffwilliams-system_users",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "author": "geoffwilliams",
   "summary": "Audit and manage system users with puppet",
   "license": "Apache-2.0",
@@ -8,7 +8,8 @@
   "project_page": "https://github.com/GeoffWilliams/system_users",
   "issues_url": "https://github.com/GeoffWilliams/system_users/issues",
   "dependencies": [
-    {"name":"puppetlabs-stdlib","version_requirement":">= 4.14.0"}
+    {"name":"puppetlabs-stdlib","version_requirement":">= 4.14.0"},
+    {"name":"geoffwilliams-filemagic", "version_requirement":"0.4.1"}
   ],
   "data_provider": null
 }
