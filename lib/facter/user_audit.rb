@@ -20,7 +20,7 @@ module SystemUsers
     def self.get_uids(max)
       list = File.readlines(SystemUsersConstants::PASSWD_FILE).reject { |line|
         # skip entirely whitespace or commented out
-        reject = !!(line =~ /^\s*$/ or line =~ /^\s*#/)
+        reject = !!(line =~ /^\s*$/ || line =~ /^\s*#/)
 
         # skip IDs >= 500 leaving only the low ones
         reject |= line.split(':')[3].to_i >= max
@@ -46,7 +46,7 @@ module SystemUsers
     def self.root_aliases
       list = File.readlines(SystemUsersConstants::PASSWD_FILE).reject { |line|
         # skip entirely whitespace or commented out
-        reject = !!(line =~ /^\s*$/ or line =~ /^\s*#/)
+        reject = !!(line =~ /^\s*$/ || line =~ /^\s*#/)
 
         # only for UID == 0 (root power)
         reject |= line.split(':')[2] != '0'
@@ -63,7 +63,7 @@ module SystemUsers
     def self.get_dups(filename, col)
       list = File.readlines(filename).reject { |line|
         # skip entirely whitespace or commented out
-        line =~ /^\s+$/ or line =~ /^#/
+        line =~ /^\s+$/ || line =~ /^#/
       }.map { |line|
         line.split(':')[col]
       }
@@ -78,7 +78,7 @@ module SystemUsers
       data = {}
       File.readlines(SystemUsersConstants::PASSWD_FILE).reject { |line|
         # skip entirely whitespace or commented out
-        reject = !!(line =~ /^\s*$/ or line =~ /^\s*#/)
+        reject = !!(line =~ /^\s*$/ || line =~ /^\s*#/)
       }.each { |line|
         # Fact to contain structured data representing the homedir
         # "don" => {
@@ -128,10 +128,10 @@ module SystemUsers
           # find any world/group writable files in the top level homedir, do NOT
           # perform a complete find as this will take too much resources
           og_write = Dir.glob(File.join(path, "*"), File::FNM_DOTMATCH).reject { |f|
-            rej = (f =~ /^\.{1,2}$/)
+            rej = File.symlink?(f) || f =~ /^\.{1,2}$/
             if ! rej
               stat = File.stat(f)
-              rej = ! ((stat.mode & 00002) == 00002) and ! ((stat.mode & 00020) == 00020)
+              rej = ! ((stat.mode & 00002) == 00002) && ! ((stat.mode & 00020) == 00020)
             end
 
             rej
@@ -191,7 +191,7 @@ module SystemUsers
     def self.empty_password_regular()
       list = File.readlines(SystemUsersConstants::SHADOW_FILE).reject { |line|
         # skip entirely whitespace or commented out
-        reject = !!(line =~ /^\s*$/ or line =~ /^\s*#/)
+        reject = !!(line =~ /^\s*$/ || line =~ /^\s*#/)
         reject |= line.split(':')[1] != ''
 
         reject
@@ -217,7 +217,7 @@ module SystemUsers
       data = {}
       File.readlines(SystemUsersConstants::PASSWD_FILE).reject { |line|
         # skip entirely whitespace or commented out
-        reject = !!(line =~ /^\s*$/ or line =~ /^\s*#/)
+        reject = !!(line =~ /^\s*$/ || line =~ /^\s*#/)
 
         reject
       }.each { |line|
@@ -239,7 +239,7 @@ module SystemUsers
       if Facter.value(:os)['family'] != 'AIX'
         File.readlines(SystemUsersConstants::SHADOW_FILE).reject { |line|
           # skip entirely whitespace or commented out
-          reject = !!(line =~ /^\s*$/ or line =~ /^\s*#/)
+          reject = !!(line =~ /^\s*$/ || line =~ /^\s*#/)
 
           reject
         }.each { |line|
