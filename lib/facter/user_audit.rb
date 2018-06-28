@@ -23,7 +23,7 @@ module SystemUsers
         reject = !!(line =~ /^\s*$/ || line =~ /^\s*#/)
 
         # skip IDs >= 500 leaving only the low ones
-        reject |= line.split(':')[3].to_i >= max
+        reject |= line.split(':')[2].to_i >= max
 
         # skip root
         reject |= line.split(':')[0] == 'root'
