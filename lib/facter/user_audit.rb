@@ -11,6 +11,10 @@ module SystemUsers
   module Fact
     def self.add_fact()
       Facter.add(:user_audit) do
+        confine :kernel do |value|
+          value != "windows"
+        end
+
         setcode do
           SystemUsers::Fact::run_fact()
         end
