@@ -172,7 +172,7 @@ The following properties are available in the `system_users_disable_overrides` t
 
 Valid values: overrides_disabled
 
-
+not used
 
 #### Parameters
 
@@ -182,5 +182,5 @@ The following parameters are available in the `system_users_disable_overrides` t
 
 namevar
 
-
+arbitrary sting
 

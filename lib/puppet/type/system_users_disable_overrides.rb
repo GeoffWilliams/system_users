@@ -4,6 +4,7 @@ Puppet::Type.newtype(:system_users_disable_overrides) do
   @doc = "Disable the files .netrc, .forward, .rhosts and .shosts by changing the owner to root and the permissions to 000"
 
   newproperty(:ensure) do
+    desc "not used"
     newvalue(:overrides_disabled) do
       return provider.disable_overrides
     end
@@ -17,6 +18,7 @@ Puppet::Type.newtype(:system_users_disable_overrides) do
   # basically a switch but this seems impossible.  Instead:
   # "Don't do that" (TM)
   newparam(:ensure) do
+    desc "arbitrary sting"
     # The code below never fires.  I'l leave it in place incase anyone
     # works out a way to enable it
     # validate do |value|
