@@ -1,9 +1,18 @@
-# System_users::Lock_inactive
+# @summary Lock users who have been inactive for a certain period
 #
-# Lock users who have been inactive for a certain period
+# Lock users who have been inactive for a certain period:
+#
+# *Solaris*
+#   1. set `definact` in `/usr/sadm/defadduser`
+#   2. `useradd -D`
+#
+# *RHEL*
+#   * set `INACTIVE=` in `/etc/default/useradd`
 #
 # @param period How long to wait before locking a user (days)
-class system_users::lock_inactive($period = 30) {
+class system_users::lock_inactive(
+  Integer $period = 30
+) {
 
   # SOLARIS
   case $facts['os']['family'] {

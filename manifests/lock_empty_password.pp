@@ -1,6 +1,7 @@
-# System_users::Lock_empty_password
+# @summary Lock all user accounts with empty passwords
 #
-# Lock all user accounts with empty passwords
+# The `user_audit` fact contains a list of users with empty passwords, we use this to
+# determine if any accounts need locking
 #
 # @param lock_method string to insert into password field to lock the account
 class system_users::lock_empty_password($lock_method = '*') {
@@ -9,7 +10,5 @@ class system_users::lock_empty_password($lock_method = '*') {
     user { $users_to_lock:
       password => $lock_method,
     }
-  } else {
-    warning("user_audit fact missing - system_users module seems broken?")
   }
 }

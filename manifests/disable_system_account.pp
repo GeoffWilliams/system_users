@@ -1,9 +1,12 @@
-# System_users::Disable_system_accounts
+# @summary Lock the password and shell of system/low uid users
 #
 # Lock the password and shell of:
-#   system users (`system_uids` - uid < 1000)
-#   - or -
-#   low uid users (`low_uids` - uid < 500)
+#
+# *System users*
+# * `system_uids` - uid < 1000
+#
+# *Low uids*
+# * `low_uids` - uid < 500
 #
 # For system accounts present on this node excluding:
 #   * root
@@ -21,7 +24,7 @@
 # itself excludes the root user.
 #
 # @param uid_range Range of UIDs to lockdown (see above)
-# @param exempt_users Exempt any usernames in this list from lockdown
+# @param exempt_users Additional usernames to exempt
 class system_users::disable_system_account(
     Enum['low_uids', 'system_uids'] $uid_range      = 'system_uids',
     Array[String]                   $exempt_users = [],

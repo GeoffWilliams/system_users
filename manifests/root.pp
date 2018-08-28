@@ -1,7 +1,8 @@
-# System_users::Root
+# @summary Ensure root user and its homedir are setup correctly
 #
-# Ensure root user and its homedir are setup correctly
-#
+# Features:
+#   * Manage the `root` user and its homedir
+#   * Manage permissions on `/root` and ensure it exists
 class system_users::root {
   user { "root":
     ensure => present,

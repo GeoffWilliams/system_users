@@ -7,3 +7,4 @@ Puppetfile.lock
 /pkg
 .yardoc
 .idea
+.Puppetfile.pdqtest

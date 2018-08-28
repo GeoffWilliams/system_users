@@ -1,10 +1,8 @@
-# System_users::Delete_root_alias
+# @summary Remove all aliases of the root account
 #
-# Remove all aliases of the root account (UID == 0 and username != root)
+# Remove all aliases of the root account (UID == `0` and username != `root`). These are
+# identified by the `user_audit` fact
 class system_users::delete_root_alias {
-  # user { $user_audit['duplicate']['root_alias']:
-  #   ensure => absent,
-  # }
   $users_to_delete = dig($facts, 'user_audit', 'duplicate', 'root_alias')
 
   if $users_to_delete {

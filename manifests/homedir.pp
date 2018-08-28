@@ -1,13 +1,18 @@
-# System_users::Homedir
+# @summary Ensure user homedirs set to correct `mode`
 #
-# Check and fix common gotchas in user homedirs on this system:
+# The `user_audit` fact contains a list of all homedirs for users local to this system. We
+# use this information to enforce the desired mode on these directories, excluding the `root`
+# user and other system home directories (see code for details).
 #
+# @note The `mode` parameter must be set for any changes to happen.
+#
+# @param mode Mode to set home directories to, eg `0700`
 class system_users::homedir(
-    $mode = unset,
+    Optional[String] $mode = undef,
 ) {
   $homedirs = dig($facts, 'user_audit', 'homedirs')
 
-  if $homedirs {
+  if $homedirs and $mode {
     # skip system uids as these users often share vital system directories
     # between themselves such as /sbin, /, /var/lib, etc...
     $homedirs.filter |$user, $hash| {

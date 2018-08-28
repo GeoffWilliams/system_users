@@ -1,7 +1,7 @@
-# System_users::Delete_nis
+# @summary Delete _legacy_ NIS users from this system
 #
 # Delete _legacy_ NIS users from this system (lines starting `+` in `/etc/group`, `/etc/gshadow`, `/etc/passwd` and
-# `/etc/shadow`.
+# `/etc/shadow`).
 #
 # @see https://forge.puppet.com/geoffwilliams/filemagic
 #
